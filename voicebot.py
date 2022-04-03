@@ -1,9 +1,17 @@
 import logging
 import os
 
+from google.cloud import dialogflow
 from dotenv import load_dotenv
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+
+
+load_dotenv()
+TG_TOKEN = os.getenv("TG_TOKEN")
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+PROJECT_ID = os.getenv("PROJECT_ID")
+
 
 # Enable logging
 logging.basicConfig(
@@ -15,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 # Define a few command handlers. These usually take the two arguments update and
 # context.
-def start(update: Update, context: CallbackContext) -> None:
+def start(update: Update, context: CallbackContext):
     """Send a message when the command /start is issued."""
     user = update.effective_user
     update.message.reply_markdown_v2(
@@ -24,21 +32,43 @@ def start(update: Update, context: CallbackContext) -> None:
     )
 
 
-def help_command(update: Update, context: CallbackContext) -> None:
+def help_command(update: Update, context: CallbackContext):
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
 
 
-def echo(update: Update, context: CallbackContext) -> None:
+def echo(update: Update, context: CallbackContext):
     """Echo the user message."""
-    update.message.reply_text(update.message.text)
+    msg = detect_intent_texts(PROJECT_ID, update.message.chat_id, update.message.text, 'ru')
+    update.message.reply_text(msg)
+    
+    
+def detect_intent_texts(project_id, session_id, text, language_code):    
+  session_client = dialogflow.SessionsClient()
+  session = session_client.session_path(project_id, session_id)
+  text_input = dialogflow.TextInput(text=text, language_code=language_code)
+  query_input = dialogflow.QueryInput(text=text_input)
+  response = session_client.detect_intent(session=session, query_input=query_input)
+  print("=" * 20)
+  print("Query text: {}".format(response.query_result.query_text))
+  print(
+            "Detected intent: {} (confidence: {})\n".format(
+                response.query_result.intent.display_name,
+                response.query_result.intent_detection_confidence,
+            )
+        )
+  print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
+  return response.query_result.fulfillment_text
+
 
 
 def main() -> None:
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
-    load_dotenv()
-    TG_TOKEN = os.getenv("TOKEN")
+    #load_dotenv()
+    #TG_TOKEN = os.getenv("TG_TOKEN")
+    
+    
     updater = Updater(TG_TOKEN)
 
     # Get the dispatcher to register handlers
