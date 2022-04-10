@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import time
 import vk_api
 
 from google.cloud import dialogflow
@@ -53,15 +54,15 @@ if __name__ == '__main__':
     vk_session = vk_api.VkApi(token=VK_TOKEN)
     longpoll = VkLongPoll(vk_session)
     vk_api = vk_session.get_api()
+    timer = 3
     
-    #while True:
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            echo(event, vk_api)
-                #print('Новое сообщение:')
-                #if event.to_me:
-                 #   print('Для меня от: ', event.user_id)
-                #else:
-                  #  print('От меня для: ', event.user_id)
-                #print('Текст:', event.text)
+    while True:
+        try:
+            for event in longpoll.listen():
+                if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                    echo(event, vk_api)
+        except Exception as error:
+            logging.exception(error)
+            time.sleep(timer)
+             
 
