@@ -23,12 +23,23 @@ logger = logging.getLogger(__name__)
 
 
 def echo(event, vk_api):
+    msg = detect_intent_texts(PROJECT_ID, event.user_id, event.text, 'ru')
     vk_api.messages.send(
         user_id=event.user_id,
-        message=event.text,
+        message=msg,
         random_id=random.randint(1,1000)
     )
-    print(event.text)
+    
+def detect_intent_texts(project_id, session_id, text, language_code):    
+    session_client = dialogflow.SessionsClient()
+    session = session_client.session_path(project_id, session_id)
+    text_input = dialogflow.TextInput(text=text, language_code=language_code)
+    query_input = dialogflow.QueryInput(text=text_input)
+    response = session_client.detect_intent(session=session, query_input=query_input)
+    if response.query_result.intent.is_fallback:
+        return None
+    else:
+        return response.query_result.fulfillment_text
 
 
 if __name__ == '__main__':
