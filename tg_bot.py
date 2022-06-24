@@ -50,7 +50,7 @@ def main():
         dispatcher.add_handler(CommandHandler("start", start))
         dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
     except telegram.error.TelegramError:
-        dispatcher.add_error_handler(logger.error("Something happend")
+        dispatcher.add_error_handler(logger.error("Something happend"))
     finally: updater.start_polling()
 
 
