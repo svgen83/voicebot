@@ -1,6 +1,8 @@
+import argparse
 import json
 import logging
 import os
+import sys
 
 from google.cloud import dialogflow
 from dotenv import load_dotenv
@@ -36,7 +38,11 @@ if __name__ == '__main__':
     GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     PROJECT_ID = os.getenv("PROJECT_ID")
     
-    with open("/home/sergei/Документы/GitHub/voicebot/questions.json", "r") as questions:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", help="введите путь к файлу с фразами")
+    args = parser.parse_args()
+    
+    with open(args.path, "r") as questions:
       phrases = json.load(questions)
       
     
