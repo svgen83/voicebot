@@ -43,7 +43,7 @@ VK_TOKEN="Токен соцсети Вконтакте"
 1) скачать [файл с необходимыми фразами](https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json)
 2) запустить скрипт:
 ```
-python learning.py
+python learning.py /путь к файлу с обучающими фразами
 ```
 
 Для запуска телеграмм-бота в командной строке пишем:
