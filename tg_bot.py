@@ -20,8 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def start(update: Update, context: CallbackContext):
-    """Send a message when the command /start is issued."""
+def start(update: Update, context: CallbackContext)
     user = update.effective_user
     update.message.reply_markdown_v2(
         fr'Hi {user.mention_markdown_v2()}\!',
@@ -29,12 +28,9 @@ def start(update: Update, context: CallbackContext):
     )
 
 
-def help_command(update: Update, context: CallbackContext):
-    update.message.reply_text('Help!')
-
-
 def echo(update: Update, context: CallbackContext):
-    msg = detect_intent_texts(PROJECT_ID, update.message.chat_id, update.message.text, 'ru')
+    msg = detect_intent_texts(
+    PROJECT_ID, update.message.chat_id, update.message.text, 'ru')
     update.message.reply_text(msg)
     
     
@@ -47,18 +43,15 @@ def detect_intent_texts(project_id, session_id, text, language_code):
   return response.query_result.fulfillment_text
 
 
-
 def main():
-    updater = Updater(TG_TOKEN)
-    dispatcher = updater.dispatcher
-
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
-
-    updater.start_polling()
-    updater.idle()
+    try:
+        updater = Updater(TG_TOKEN)
+        dispatcher = updater.dispatcher
+        dispatcher.add_handler(CommandHandler("start", start))
+        dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
+    except telegram.error.TelegramError:
+        dispatcher.add_error_handler(logger.error("Something happend")
+    finally: updater.start_polling()
 
 
 if __name__ == '__main__':
