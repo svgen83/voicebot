@@ -34,8 +34,8 @@ if __name__ == '__main__':
     level=logging.INFO
     )
 
-    GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-    PROJECT_ID = os.getenv("PROJECT_ID")
+    google_application_credentials = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    project_id = os.getenv("PROJECT_ID")
     
     parser = argparse.ArgumentParser()
     parser.add_argument("path", help="введите путь к файлу с фразами")

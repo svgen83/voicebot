@@ -39,12 +39,12 @@ if __name__ == '__main__':
     logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
-
-    GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-    PROJECT_ID = os.getenv("PROJECT_ID")
-    VK_TOKEN = os.getenv("VK_TOKEN")
+ 
+    google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    project_id = os.getenv("PROJECT_ID")
+    vk_token = os.getenv("VK_TOKEN")
     
-    vk_session = vk_api.VkApi(token=VK_TOKEN)
+    vk_session = vk_api.VkApi(token=vk_token)
     longpoll = VkLongPoll(vk_session)
     vk_api = vk_session.get_api()
     timer = 3

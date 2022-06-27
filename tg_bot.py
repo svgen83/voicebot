@@ -7,16 +7,6 @@ from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
 
-load_dotenv()
-TG_TOKEN = os.getenv("TG_TOKEN")
-GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-PROJECT_ID = os.getenv("PROJECT_ID")
-
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-
 logger = logging.getLogger(__name__)
 
 
@@ -44,6 +34,15 @@ def detect_intent_texts(project_id, session_id, text, language_code):
 
 
 def main():
+    load_dotenv()
+    tg_token = os.getenv("TG_TOKEN")
+    google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    project_id = os.getenv("PROJECT_ID")
+
+    logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+    
     updater = Updater(TG_TOKEN)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
