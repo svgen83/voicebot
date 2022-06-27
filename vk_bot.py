@@ -9,21 +9,10 @@ from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 
-load_dotenv()
-TG_TOKEN = os.getenv("TG_TOKEN")
-GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-PROJECT_ID = os.getenv("PROJECT_ID")
-VK_TOKEN = os.getenv("VK_TOKEN")
-
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-
 logger = logging.getLogger(__name__)
 
 
-def echo(event, vk_api):
+def send_anwer(event, vk_api):
     msg = detect_intent_texts(PROJECT_ID, event.user_id, event.text, 'ru')
     if msg:
         vk_api.messages.send(
@@ -45,8 +34,12 @@ def detect_intent_texts(project_id, session_id, text, language_code):
 
 
 if __name__ == '__main__':
-    #main()
     load_dotenv()
+
+    logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+
     GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
     PROJECT_ID = os.getenv("PROJECT_ID")
     VK_TOKEN = os.getenv("VK_TOKEN")
@@ -60,7 +53,7 @@ if __name__ == '__main__':
         try:
             for event in longpoll.listen():
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                    echo(event, vk_api)
+                    send_answer(event, vk_api)
         except Exception as error:
             logging.exception(error)
             time.sleep(timer)

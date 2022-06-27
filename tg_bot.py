@@ -28,7 +28,7 @@ def start(update: Update, context: CallbackContext):
     )
 
 
-def echo(update: Update, context: CallbackContext):
+def send_msg(update: Update, context: CallbackContext):
     msg = detect_intent_texts(
     PROJECT_ID, update.message.chat_id, update.message.text, 'ru')
     update.message.reply_text(msg)
@@ -48,7 +48,7 @@ def main():
         updater = Updater(TG_TOKEN)
         dispatcher = updater.dispatcher
         dispatcher.add_handler(CommandHandler("start", start))
-        dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
+        dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_msg))
     except telegram.error.TelegramError:
         dispatcher.add_error_handler(logger.error("Something happend"))
     finally: updater.start_polling()
