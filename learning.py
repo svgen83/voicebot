@@ -8,12 +8,6 @@ from google.cloud import dialogflow
 from dotenv import load_dotenv
 
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
-
-
 def create_intent(project_id, display_name, training_phrases_parts, message_texts):
     intents_client = dialogflow.IntentsClient()
     parent = dialogflow.AgentsClient.agent_path(project_id)
@@ -34,6 +28,11 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
 if __name__ == '__main__':
 
     load_dotenv()
+    
+    logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+    )
 
     GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     PROJECT_ID = os.getenv("PROJECT_ID")
@@ -46,9 +45,9 @@ if __name__ == '__main__':
       phrases = json.load(questions)
       
     
-    for phrase in phrases:
-        display_name = phrase
-        questions = phrases[phrase]["questions"]
-        answer = phrases[phrase]["answer"]
+    for phrase in phrases.items():
+        display_name, dialog_elements = phrase
+        questions = dialog_elements["questions"]
+        answer = dialog_elements["answer"]
         create_intent(PROJECT_ID, display_name, questions, [answer])
 
