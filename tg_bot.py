@@ -44,14 +44,12 @@ def detect_intent_texts(project_id, session_id, text, language_code):
 
 
 def main():
-    try:
-        updater = Updater(TG_TOKEN)
-        dispatcher = updater.dispatcher
-        dispatcher.add_handler(CommandHandler("start", start))
-        dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_msg))
-    except telegram.error.TelegramError:
-        dispatcher.add_error_handler(logger.error("Something happend"))
-    finally: updater.start_polling()
+    updater = Updater(TG_TOKEN)
+    dispatcher = updater.dispatcher
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_msg))
+    dispatcher.add_error_handler(logger.error("Something happend"))
+    updater.start_polling()
 
 
 if __name__ == '__main__':
