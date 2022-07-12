@@ -21,7 +21,7 @@ def start(update: Update, context: CallbackContext):
 
 def send_msg(update: Update, context: CallbackContext):
     msg = detect_intent_texts(
-    PROJECT_ID, update.message.chat_id, update.message.text, 'ru').query_result.fulfillment_text
+    project_id, update.message.chat_id, update.message.text, 'ru').query_result.fulfillment_text
     update.message.reply_text(msg)
     
     
