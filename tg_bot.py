@@ -38,7 +38,7 @@ def main():
     updater = Updater(tg_token)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_msg))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_msg(project_id= project_id)))
     dispatcher.add_error_handler(logger.error("Something happend"))
     updater.start_polling()
 
