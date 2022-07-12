@@ -5,7 +5,7 @@ from google.cloud import dialogflow
 from dotenv import load_dotenv
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
-from tools.py import detect_intent_texts
+from tools import detect_intent_texts
 
 
 logger = logging.getLogger(__name__)
