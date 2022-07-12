@@ -20,6 +20,7 @@ def start(update: Update, context: CallbackContext):
 
 
 def send_msg(update: Update, context: CallbackContext):
+    project_id = os.getenv("PROJECT_ID")
     msg = detect_intent_texts(
     project_id, update.message.chat_id, update.message.text, 'ru')
     update.message.reply_text(msg)
@@ -29,7 +30,6 @@ def main():
     load_dotenv()
     tg_token = os.getenv("TG_TOKEN")
     google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-    project_id = os.getenv("PROJECT_ID")
 
     logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
