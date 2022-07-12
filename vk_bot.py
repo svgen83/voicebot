@@ -7,26 +7,23 @@ import vk_api
 from google.cloud import dialogflow
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
-
+from tools import detect_intent_texts
 
 logger = logging.getLogger(__name__)
 
 
 def send_answer(event, vk_api):
-    msg = detect_intent_texts(project_id, event.user_id, event.text, 'ru')
+    msg = create_msg
     if msg:
         vk_api.messages.send(
             user_id=event.user_id,
             message=msg,
             random_id=random.randint(1,1000)
         )
-    
-def detect_intent_texts(project_id, session_id, text, language_code):    
-    session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(project_id, session_id)
-    text_input = dialogflow.TextInput(text=text, language_code=language_code)
-    query_input = dialogflow.QueryInput(text=text_input)
-    response = session_client.detect_intent(session=session, query_input=query_input)
+
+def create_msg():
+    project_id = os.getenv("PROJECT_ID")
+    response = detect_intent_texts(project_id, event.user_id, event.text, 'ru')
     if response.query_result.intent.is_fallback:
         return None
     else:
@@ -41,7 +38,6 @@ if __name__ == '__main__':
     level=logging.INFO)
  
     google_application_credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-    project_id = os.getenv("PROJECT_ID")
     vk_token = os.getenv("VK_TOKEN")
     
     vk_session = vk_api.VkApi(token=vk_token)
