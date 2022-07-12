@@ -1,7 +1,6 @@
 import logging
 import os
 
-from google.cloud import dialogflow
 from dotenv import load_dotenv
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
