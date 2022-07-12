@@ -4,7 +4,6 @@ import random
 import time
 import vk_api
 
-from google.cloud import dialogflow
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
 from tools import detect_intent_texts
