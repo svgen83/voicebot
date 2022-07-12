@@ -5,6 +5,7 @@ from google.cloud import dialogflow
 from dotenv import load_dotenv
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from tools.py import detect_intent_texts
 
 
 logger = logging.getLogger(__name__)
@@ -20,7 +21,7 @@ def start(update: Update, context: CallbackContext):
 
 def send_msg(update: Update, context: CallbackContext):
     msg = detect_intent_texts(
-    PROJECT_ID, update.message.chat_id, update.message.text, 'ru')
+    PROJECT_ID, update.message.chat_id, update.message.text, 'ru').query_result.fulfillment_text
     update.message.reply_text(msg)
     
     
@@ -43,7 +44,7 @@ def main():
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
     
-    updater = Updater(TG_TOKEN)
+    updater = Updater(tg_token)
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_msg))

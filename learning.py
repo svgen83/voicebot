@@ -49,5 +49,5 @@ if __name__ == '__main__':
         display_name, dialog_elements = phrase
         questions = dialog_elements["questions"]
         answer = dialog_elements["answer"]
-        create_intent(PROJECT_ID, display_name, questions, [answer])
+        create_intent(project_id, display_name, questions, [answer])
 

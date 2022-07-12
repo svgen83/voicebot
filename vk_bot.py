@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def send_answer(event, vk_api):
-    msg = detect_intent_texts(PROJECT_ID, event.user_id, event.text, 'ru')
+    msg = detect_intent_texts(project_id, event.user_id, event.text, 'ru')
     if msg:
         vk_api.messages.send(
             user_id=event.user_id,
