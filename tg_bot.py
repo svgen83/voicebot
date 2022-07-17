@@ -22,16 +22,17 @@ def start(update: Update, context: CallbackContext):
 def send_msg(update: Update, context: CallbackContext):
     project_id = os.getenv("PROJECT_ID")
     response = detect_intent_texts(
-    project_id, update.message.chat_id, update.message.text, "ru")
+                                   project_id, update.message.chat_id,
+                                   update.message.text, "ru")
     msg = response.query_result.fulfillment_text
     update.message.reply_text(msg)
-    
-    
+
+
 def error_handler(update, context):
     logger.error("Something happend", exc_info=context.error)
     context.bot.send_message(chat_id=update.message.chat_id,
                              text="Something happend")
-    
+
 
 def main():
     load_dotenv()
