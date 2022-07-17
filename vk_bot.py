@@ -14,20 +14,12 @@ logger = logging.getLogger(__name__)
 def send_answer(event, vk_api):
     project_id = os.getenv("PROJECT_ID")
     response = detect_intent_texts(project_id, event.user_id, event.text, "ru")
-    msg = create_msg(response)
-    if msg:
+    if response.query_result.fulfillment_text:
         vk_api.messages.send(
             user_id=event.user_id,
-            message=msg,
+            message=response.query_result.fulfillment_text,
             random_id=random.randint(1, 1000)
         )
-
-
-def create_msg(response):
-    if response.query_result.intent.is_fallback:
-        return None
-    else:
-        return response.query_result.fulfillment_text
 
 
 if __name__ == "__main__":
