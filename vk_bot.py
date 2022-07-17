@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 def send_answer(event, vk_api):
     project_id = os.getenv("PROJECT_ID")
     response = detect_intent_texts(project_id, event.user_id, event.text, "ru")
+    if response.query_result.intent.is_fallback:
+        logging.info(f"Бот не понимает фразы {event.text}")
+        return None
     if response.query_result.fulfillment_text:
         vk_api.messages.send(
             user_id=event.user_id,
