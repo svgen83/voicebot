@@ -31,7 +31,7 @@ def send_msg(update: Update, context: CallbackContext):
 def error_handler(update, context):
     logger.error("Something happend", exc_info=context.error)
     context.bot.send_message(chat_id=update.message.chat_id,
-                             text="Something happend")
+                             text=context.error)
 
 
 def main():
